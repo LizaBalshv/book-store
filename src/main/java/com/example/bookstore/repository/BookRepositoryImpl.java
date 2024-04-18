@@ -1,7 +1,10 @@
 package com.example.bookstore.repository;
 
 import com.example.bookstore.model.Book;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import java.util.List;
+import java.util.Optional;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,9 +16,13 @@ public class BookRepositoryImpl implements BookRepository {
 
     private final SessionFactory sessionFactory;
 
+    private final EntityManagerFactory entityManagerFactory;
+
     @Autowired
-    public BookRepositoryImpl(SessionFactory sessionFactory) {
+    public BookRepositoryImpl(SessionFactory sessionFactory,
+                              EntityManagerFactory entityManagerFactory) {
         this.sessionFactory = sessionFactory;
+        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Override
@@ -37,6 +44,14 @@ public class BookRepositoryImpl implements BookRepository {
             if (session != null) {
                 session.close();
             }
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            Book book = entityManager.find(Book.class, id);
+            return Optional.ofNullable(book);
         }
     }
 
