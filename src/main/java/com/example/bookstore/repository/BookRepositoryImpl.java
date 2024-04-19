@@ -13,9 +13,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class BookRepositoryImpl implements BookRepository {
-
     private final SessionFactory sessionFactory;
-
     private final EntityManagerFactory entityManagerFactory;
 
     @Autowired
