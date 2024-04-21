@@ -45,13 +45,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto update(Long id, CreateBookRequestDto requestDto) {
+        if (!bookRepository.existsById(id)) {
+            throw new NoSuchElementException("Book with id " + id + " not found");
+        }
         Book book = bookMapper.toModel(requestDto);
         book.setId(id);
-        if (bookRepository.existsById(book.getId())) {
-            bookRepository.save(book);
-        } else {
-            throw new NoSuchElementException("Can't update book: " + book);
-        }
+        book = bookRepository.save(book);
         return bookMapper.toDto(book);
     }
 }
