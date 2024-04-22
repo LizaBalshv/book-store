@@ -6,6 +6,7 @@ import com.example.bookstore.mapper.BookMapper;
 import com.example.bookstore.model.Book;
 import com.example.bookstore.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -44,13 +45,13 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public BookDto update(Long id, CreateBookRequestDto requestDto) {
         if (!bookRepository.existsById(id)) {
             throw new NoSuchElementException("Book with id " + id + " not found");
         }
         Book book = bookMapper.toModel(requestDto);
         book.setId(id);
-        book = bookRepository.save(book);
-        return bookMapper.toDto(book);
+        return bookMapper.toDto(bookRepository.save(book));
     }
 }
