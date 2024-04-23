@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import org.hibernate.annotations.SQLDelete;
 @SQLDelete(sql = "UPDATE books SET is_deleted = true WHERE id = ? AND is_deleted = false")
 @Getter
 @Setter
+@Table(name = "books")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
