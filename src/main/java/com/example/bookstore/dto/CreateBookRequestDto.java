@@ -7,16 +7,12 @@ import java.math.BigDecimal;
 
 public record CreateBookRequestDto(
         Long id,
-
         @NotNull
         String title,
-
         @NotNull
         String author,
-
         @ValidIsbn
         String isbn,
-
         @NotNull
         @Positive
         BigDecimal price,
